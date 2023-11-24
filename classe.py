@@ -1,4 +1,9 @@
-#Classe Joeur          
+#Classe Joueur
+class Coordonnees:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        
 class Joueur:
     def __init__(self, nom, gold = 0):
         self.nom = nom
@@ -7,11 +12,19 @@ class Joueur:
 class Ville:
     def __init__(self, nom):
         self.nom = nom
+        self.joueur = 0
         self.population = 1
         self.production = 1
         self.orgen = 1
         self.sciencegen = 1
+        self.build = None
 
+class Production:
+    def __init__(self, nom):
+        self.nom = nom
+        self.cout = nom.coutprod
+       
+            
 class territoire:
     def __init__(self,joueur):
         self.joueur = joueur
@@ -21,12 +34,13 @@ class Recherche:
     def __init__(self,nom_recherche,point_recherche_requis):
         self.nom_recherche = nom_recherche
         self.point_recherche_requis = point_recherche_requis   
-class Unite:
-    
+
+class Unite:  
     class Archer:
         # Attributs de classe partagés
         degats = 10
         portee = 2
+        coutprod = 10
 
         def __init__(self, nom,xp = 0, pv = 50):
             # Attributs d'instance propres à chaque instance
@@ -56,3 +70,4 @@ class Case:
         self.occtroit = occtroit
         self.bonusprox = bonusprox
         self.caractéristique = caractéristique
+        self.appartenance = 0
