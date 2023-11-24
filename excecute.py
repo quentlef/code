@@ -10,11 +10,7 @@ ennemi1 = cl.Unite.Archer("unité2",pv=5 )
 joueur1.attaquer(ennemi1)            
             
             
-#Initialisation des variables Villes , Joueur
-Lille = cl.Ville("Lille")
-Paris = cl.Ville("Paris")
-joueur1 = cl.Joueur("J1")
-joueur2 = cl.Joueur("J2")
+
 
         
 ''' 
@@ -23,19 +19,36 @@ Plaines = Occtroit +2 nourriture à la ville rattaché
 Montagne = aucune troupes ne peut passer par cette case, +2 pour université si à côté
 Carrière = Occtroit +2 engrenage à la ville rattaché 
 '''  
-Plaines = ("Plaines", "Nourriture = + 2" , "rien", "P")
-Montagne = ("Montagne", "rien" , "+1 si université", "M")
-Carrière = ("Carrière", "Production = + 2" , "rien", "C")
+Plaines = cl.Case("Plaines", "Nourriture = + 2" , "rien", "P")
+Montagne = cl.Case("Montagne", "rien" , "+1 si université", "M")
+Carrière = cl.Case("Carrière", "Production = + 2" , "rien", "C")
 
 
 def changer_nom(joueur):
     nom = input("Rentrer votre nom d'utilisateur")
     joueur.nom = nom
 
+#Initialisation des variables Villes , Joueur
 def CommencerPartie(): #à remplir
-    #joueur1 = Joueur("J1")
-    #joueur2 = Joueur("J2")
-    return
+    Lille = cl.Ville("Lille")
+    Paris = cl.Ville("Paris")
+    Gaia = cl.Joueur("Gaia")
+    j1 = cl.Joueur("J1")
+    j2 = cl.Joueur("J2")
+    Lille.joueur = j1
+    Paris.joueur = j2
+    #choisir un build pour la ville 1:
+    for Ville in cl.Ville:
+        Build_voulue = input("Production ?")
+        if Ville.build == None:
+            archer1 = cl.Production(cl.Unite.Archer)
+            Ville.build = archer1 = cl.Production(cl.Unite.Archer)
+
+
+
+
+def TourPasse():
+    return 
 
 def initialisationJoueur(n):
     Liste_Joueur = []
@@ -45,14 +58,14 @@ def initialisationJoueur(n):
        
     return Liste_Joueur
 
-
-
-    
 def initMap(n):
     L = []
     for i in range(n):
         L.append(n*["Vide"])
     return L
+
+    
+
 
 
 def randomMap(Map):
