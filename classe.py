@@ -10,13 +10,15 @@ class Joueur:
         self.gold = gold
 
 class Ville:
-    def __init__(self, nom):
+    population = 1
+    production = 1
+    orgen = 1
+    sciencegen = 1
+    def __init__(self, nom, joueur, coord):
         self.nom = nom
-        self.joueur = 0
-        self.population = 1
-        self.production = 1
-        self.orgen = 1
-        self.sciencegen = 1
+        self.joueur = joueur
+        self.coord = coord
+
         self.build = None
 
 class Production:
@@ -41,23 +43,27 @@ class Unite:
         degats = 10
         portee = 2
         coutprod = 10
+        pm = 2
+        pv = 50
+        xp = 0
+        attaque = 1
 
-        def __init__(self, nom,xp = 0, pv = 50):
+        def __init__(self, nom,coord =(1,1)):
             # Attributs d'instance propres à chaque instance
-            self.points_de_vie = pv
-            self.nom = nom
-            self.experience = xp     
+            self.nom = nom     
+            self.coord = coord
+            
         def attaquer(self, cible):
         #regarde la portée
             if self.portee >= 2:
             
-                cible.points_de_vie -= self.degats
+                cible.pv -= self.degats
             
-                if cible.points_de_vie < 0:
+                if cible.pv < 0:
                     print(f"Attaque réussie ! l'{cible.nom} est morte ")
                     del cible
                 else :
-                    print(f"Attaque réussie ! Points de vie restants de la cible : {cible.points_de_vie}")
+                    print(f"Attaque réussie ! Points de vie restants de la cible : {cible.pv}")
                 
             else:
                 print("La cible est hors de portée !")        
@@ -65,9 +71,16 @@ class Unite:
                      
 #Initialisation des cases 
 class Case:
-    def __init__(self, nom, occtroit , bonusprox , caractéristique):
+    def __init__(self, nom, occtroit:[] , bonusprox , caractéristique, etatdeplacement):
         self.nom = nom
-        self.occtroit = occtroit
+        self.occtroit = [0,0,0,0] #[prod,nourriture,science,or]
         self.bonusprox = bonusprox
         self.caractéristique = caractéristique
         self.appartenance = 0
+        self.coutPM = etatdeplacement
+        
+class Case_plateau:
+    def __init__(self,typecase,coord):
+        self.type = typecase
+        self.coord = coord
+
