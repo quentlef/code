@@ -28,24 +28,32 @@ def initMap(n):
     return L
 
 def randomMap(Map):
+    liste_case = []
     n = len(Map)
     for i in range(n):
         for j in range(n):
             random = rd.random()
             if 0 <= random < 0.50 :
                 Map[i][j] = 'P'
-                case1 = cl.Case_plateau(Plaines,(i,j))
+                case = cl.Case_plateau(Plaines, (i,j))
+                liste_case.append(case)
+                
             elif 0.50<= random < 0.60 :
                 Map[i][j] = 'M'
+                case = cl.Case_plateau(Montagne, (i,j))
+                liste_case.append(case)
                 
             elif 0.60 <= random <= 1:
                 Map[i][j] = 'C'
+                case = cl.Case_plateau(Carrière, (i,j))
+                liste_case.append(case)
                 
             else:
                 print("marche pas")  
-    return Map
+    return Map,liste_case
+    
 def affiche():
-    Map = randomMap(initMap(10))
+    Map,liste_case = randomMap(initMap(10))
     print(Map)
     fenetre = tk.Tk()
     Bgcolour = ""
@@ -56,16 +64,12 @@ def affiche():
         m = tk.PanedWindow(p, orient=tk.VERTICAL)
         p.add(m)
         for j in range(n):
-            if Map[i][j] == 'H':
+            if Map[i][j] == 'P':
                 Bgcolour = 'green'    
-            elif Map[i][j] == 'E':
-                Bgcolour = 'blue'
-            elif Map[i][j] == 'P':
+            elif Map[i][j] == 'M':
                 Bgcolour = 'grey'
-            elif Map[i][j] == 'T' :
-                Bgcolour = "#A5A52A"
-            elif Map[i][j] == 'V' :
-                Bgcolour = "#A5A52A"
+            elif Map[i][j] == 'C' :
+                Bgcolour = 'orange'
             else:
                 Bgcolour = 'red'
                 
@@ -86,8 +90,8 @@ def CommencerPartie(): #à modif plus tard pour + 2 joueurs
     Paris.joueur = j2
     #choisir un build pour la ville 1:
     for Ville in cl.Ville:
-        Build_voulue = input("Production ?")
         if Ville.build == None:
+            Build_voulue = input("Production ?")        
             archer1 = cl.Production(cl.Unite.Archer)
             Ville.build = archer1 = cl.Production(cl.Unite.Archer)
                    
