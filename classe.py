@@ -81,6 +81,6 @@ class Case:
         
 class Case_plateau:
     def __init__(self,typecase,coord):
-        self.type = typecase
+        self.typecase = typecase
         self.coord = coord
 
