@@ -10,6 +10,7 @@ class Joueur:
         self.gold = gold
 
 class Ville:
+    list_villes = []
     population = 1
     production = 1
     orgen = 1
@@ -18,8 +19,8 @@ class Ville:
         self.nom = nom
         self.joueur = joueur
         self.coord = coord
-
         self.build = None
+        Ville.list_villes.append(self)
 
 class Production:
     def __init__(self, nom):
