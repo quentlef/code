@@ -51,9 +51,10 @@ def randomMap(Map):
             else:
                 print("marche pas")  
     return Map,liste_case
-    
+Map,liste_case = randomMap(initMap(10)) 
+
 def affiche():
-    Map,liste_case = randomMap(initMap(10))
+
     print(Map)
     fenetre = tk.Tk()
     Bgcolour = ""
@@ -64,16 +65,21 @@ def affiche():
         m = tk.PanedWindow(p, orient=tk.VERTICAL)
         p.add(m)
         for j in range(n):
-            if Map[i][j] == 'P':
+            if 'P' == Map[i][j]:
                 Bgcolour = 'green'    
-            elif Map[i][j] == 'M':
+            elif 'M' == Map[i][j]:
                 Bgcolour = 'grey'
-            elif Map[i][j] == 'C' :
+            elif 'C' == Map[i][j] :
                 Bgcolour = 'orange'
-            else:
+            elif 'VJ1' in Map[i][j] :
+                Bgcolour = 'blue'
+            elif 'VJ2' in Map[i][j] :
                 Bgcolour = 'red'
+            else :
+                Bgcolour = 'white'
                 
             m.add(tk.Label(m, text=(Map[i][j]), background=Bgcolour, anchor=tk.CENTER, relief=tk.RAISED, height=5,width=15))
+    p.add(tk.Button(p, text="Quit", command=fenetre.destroy))
     p.pack()
     
     fenetre.mainloop()
@@ -84,16 +90,18 @@ def CommencerPartie(): #à modif plus tard pour + 2 joueurs
     j1 = cl.Joueur("J1")
     j2 = cl.Joueur("J2")
     Lille = cl.Ville("Lille",j1,(0,5))
+    Map[0][5] = "VJ1 {}".format(Lille.nom)
     Paris = cl.Ville("Paris",j2,(9,6))
+    Map[9][6] = "VJ2 {}".format(Paris.nom)
 
     Lille.joueur = j1
     Paris.joueur = j2
     #choisir un build pour la ville 1:
-    for Ville in cl.Ville:
-        if Ville.build == None:
+    for ville in cl.Ville.list_villes:
+        if ville.build == None:
             Build_voulue = input("Production ?")        
             archer1 = cl.Production(cl.Unite.Archer)
-            Ville.build = archer1 = cl.Production(cl.Unite.Archer)
+            ville.build = archer1 = cl.Production(cl.Unite.Archer)
                    
 def bouge(unite,direction):
     x,y = unite.coord 
