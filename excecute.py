@@ -28,32 +28,29 @@ def initMap(n):
     return L
 
 def randomMap(Map):
-    liste_case = []
     n = len(Map)
     for i in range(n):
         for j in range(n):
             random = rd.random()
             if 0 <= random < 0.50 :
-                Map[i][j] = 'P'
+                Map[i][j] = "P {}".format((i,j))
                 case = cl.Case_plateau(Plaines, (i,j))
-                liste_case.append(case)
                 
             elif 0.50<= random < 0.60 :
-                Map[i][j] = 'M'
+                Map[i][j] = "M"
                 case = cl.Case_plateau(Montagne, (i,j))
-                liste_case.append(case)
                 
             elif 0.60 <= random <= 1:
-                Map[i][j] = 'C'
+                Map[i][j] = "C"
                 case = cl.Case_plateau(Carrière, (i,j))
-                liste_case.append(case)
                 
             else:
                 print("marche pas")  
-    return Map,liste_case
-Map,liste_case = randomMap(initMap(10)) 
-
-def affiche():
+    return Map
+'''
+affiche selon les coordonnés (colonne,ligne)
+'''
+def affiche(Map):
 
     print(Map)
     fenetre = tk.Tk()
@@ -65,7 +62,7 @@ def affiche():
         m = tk.PanedWindow(p, orient=tk.VERTICAL)
         p.add(m)
         for j in range(n):
-            if 'P' == Map[i][j]:
+            if 'P' in (" " + Map[i][j] + " "): 
                 Bgcolour = 'green'    
             elif 'M' == Map[i][j]:
                 Bgcolour = 'grey'
@@ -85,7 +82,7 @@ def affiche():
     fenetre.mainloop()
 
 #Initialisation des variables Villes , Joueur
-def CommencerPartie(): #à modif plus tard pour + 2 joueurs    
+def CommencerPartie(Map): #à modif plus tard pour + 2 joueurs    
     Gaia = cl.Joueur("Gaia")
     j1 = cl.Joueur("J1")
     j2 = cl.Joueur("J2")
@@ -99,26 +96,65 @@ def CommencerPartie(): #à modif plus tard pour + 2 joueurs
     #choisir un build pour la ville 1:
     for ville in cl.Ville.list_villes:
         if ville.build == None:
-            Build_voulue = input("Production ?")        
+            #Build_voulue = input("Production ?")        
             archer1 = cl.Production(cl.Unite.Archer)
             ville.build = archer1 = cl.Production(cl.Unite.Archer)
                    
 def bouge(unite,direction):
     x,y = unite.coord 
+
     #appel la fonction bouge corresp
     if direction == "haut":
-        for case in cl.Case_plateau:
-            if (x+1,y) == case.coord:
-               coutdeplace = case.type.coutPM
-        if unite.pm < coutdeplace :
-            "déplacement impossible"
+        if y-1>=0:
+
+            for case in cl.Case_plateau.list_cases:
+                if (x,y-1) == case.coord:
+                    coutdeplace = case.typecase.coutPM
+            if unite.pm < coutdeplace :
+                return "déplacement impossible"
+            else:
+                unite.coord = (x,y-1)
         else:
-            unite.coord = (x+1,y)
+            return "déplacement impossible"
+        
+    if direction == "bas":
+        if y+1<=9:
+            for case in cl.Case_plateau.list_cases:
+                if (x,y+1) == case.coord:
+                   coutdeplace = case.typecase.coutPM
+            if unite.pm < coutdeplace :
+                return "déplacement impossible"
+            else:
+                unite.coord = (x,y+1)
+        else:
+            return "déplacement impossible"
+    if direction == "droite":
+        if x+1<=9:
+            for case in cl.Case_plateau.list_cases:
+                if (x+1,y) == case.coord:
+                   coutdeplace = case.typecase.coutPM
+            if unite.pm < coutdeplace :
+                return "déplacement impossible"
+            else:
+                unite.coord = (x+1,y)
+        else:
+            return "déplacement impossible"
+    if direction == "gauche":
+        if x-1>=0:
+            for case in cl.Case_plateau.list_cases:
+                if (x-1,y) == case.coord:
+                   coutdeplace = case.typecase.coutPM
+            if unite.pm < coutdeplace : #check cout en déplacement
+                return "déplacement impossible"
+            else:
+                unite.coord = (x-1,y)
+        else:
+            return "déplacement impossible"
+
             
         
-    #check cout en déplacement 
+     
     
-
 def TourPasse():
     return 
 
@@ -129,9 +165,6 @@ def initialisationJoueur(n):
         Liste_Joueur.append(nom)
        
     return Liste_Joueur
-
-
-
 
 def AfficheMap(Map):
     for i in range(len(Map)):
