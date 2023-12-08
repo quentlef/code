@@ -81,7 +81,9 @@ class Case:
         self.coutPM = etatdeplacement
         
 class Case_plateau:
+    list_cases = []
     def __init__(self,typecase,coord):
         self.typecase = typecase
         self.coord = coord
+        Case_plateau.list_cases.append(self)
 
