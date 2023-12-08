@@ -37,11 +37,11 @@ def randomMap(Map):
                 case = cl.Case_plateau(Plaines, (i,j))
                 
             elif 0.50<= random < 0.60 :
-                Map[i][j] = "M"
+                Map[i][j] = "M {}".format((i,j))
                 case = cl.Case_plateau(Montagne, (i,j))
                 
             elif 0.60 <= random <= 1:
-                Map[i][j] = "C"
+                Map[i][j] = "C {}".format((i,j))
                 case = cl.Case_plateau(Carrière, (i,j))
                 
             else:
@@ -64,13 +64,13 @@ def affiche(Map):
         for j in range(n):
             if 'P' in (" " + Map[i][j] + " "): 
                 Bgcolour = 'green'    
-            elif 'M' == Map[i][j]:
+            elif 'M' in (" " + Map[i][j] + " "):
                 Bgcolour = 'grey'
-            elif 'C' == Map[i][j] :
+            elif 'C' in (" " + Map[i][j] + " ") :
                 Bgcolour = 'orange'
-            elif 'VJ1' in Map[i][j] :
+            elif 'VJ1' in (" " + Map[i][j] + " ") :
                 Bgcolour = 'blue'
-            elif 'VJ2' in Map[i][j] :
+            elif 'VJ2' in (" " + Map[i][j] + " ") :
                 Bgcolour = 'red'
             else :
                 Bgcolour = 'white'
