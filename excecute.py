@@ -1,39 +1,44 @@
 import random as rd
 import tkinter as tk 
 import classe as cl
+from classe import *
 
 
 # Attaque du joueur1 sur l'ennemi1
 #joueur1.attaquer(ennemi1)            
-            
+ 
 ''' 
 Principes des cases :
 Plaines = Occtroit +2 nourriture à la ville rattaché
 Montagne = aucune troupes ne peut passer par cette case, +2 pour université si à côté
 Carrière = Occtroit +2 engrenage à la ville rattaché 
 '''  
+'''
+Valeur des unités pour l'heuristique de l'ia de combat
+Eclaireur:20 points
+Guerrier:30points
+Archer:30points
+'''
+VU = cl.ValeurUnite()
 Plaines = cl.Case("Plaines", [0,2,0,0] , "rien", "P", 1)
 Montagne = cl.Case("Montagne", [1,0,0,0] , "+1 si université", "M", 10)
 Carrière = cl.Case("Carrière", [2,0,0,0] , "rien", "C", 1)
 
 
-def changer_nom(joueur):
-    nom = input("Rentrer votre nom d'utilisateur")
-    joueur.nom = nom
 
 def initMap(n):
     L = []
     for i in range(n):
         L.append(n*["Vide"])
     return L
-
+#Crée une liste de liste 10*10 qui va se comporter comme une grille avec des coordonnés (colonne,ligne)
 def randomMap(Map):
     n = len(Map)
     for i in range(n):
         for j in range(n):
             random = rd.random()
             if 0 <= random < 0.50 :
-                Map[i][j] = "P {}".format((i,j))
+                Map[i][j] = "P {}".format((i,j)) #attention type != string, type <class 'str'>
                 case = cl.Case_plateau(Plaines, (i,j))
                 
             elif 0.50<= random < 0.60 :
@@ -47,12 +52,11 @@ def randomMap(Map):
             else:
                 print("marche pas")  
     return Map
-'''
-affiche selon les coordonnés (colonne,ligne)
-'''
+
 def affiche(Map):
 
-    print(Map)
+    for i in range(len(Map)):
+        print(Map[i])
     fenetre = tk.Tk()
     Bgcolour = ""
     p = tk.PanedWindow(fenetre, orient=tk.HORIZONTAL)
@@ -62,16 +66,17 @@ def affiche(Map):
         m = tk.PanedWindow(p, orient=tk.VERTICAL)
         p.add(m)
         for j in range(n):
-            if 'P' in (" " + Map[i][j] + " "): 
+            if 'VJ1' in (" " + Map[i][j] + " ") :
+                Bgcolour = 'blue'
+            elif 'VJ2' in (" " + Map[i][j] + " ") :
+                Bgcolour = 'red'
+            elif 'P' in (" " + Map[i][j] + " "): 
                 Bgcolour = 'green'    
             elif 'M' in (" " + Map[i][j] + " "):
                 Bgcolour = 'grey'
             elif 'C' in (" " + Map[i][j] + " ") :
                 Bgcolour = 'orange'
-            elif 'VJ1' in (" " + Map[i][j] + " ") :
-                Bgcolour = 'blue'
-            elif 'VJ2' in (" " + Map[i][j] + " ") :
-                Bgcolour = 'red'
+            
             else :
                 Bgcolour = 'white'
                 
@@ -84,26 +89,32 @@ def affiche(Map):
 #Initialisation des variables Villes , Joueur
 def CommencerPartie(Map): #à modif plus tard pour + 2 joueurs    
     Gaia = cl.Joueur("Gaia")
-    j1 = cl.Joueur("J1")
-    j2 = cl.Joueur("J2")
-    Lille = cl.Ville("Lille",j1,(0,5))
-    Map[0][5] = "VJ1 {}".format(Lille.nom)
+    Lille = cl.Ville("Lille",j1,(0,5)) 
+    Map[0][5] = "VJ1 {}".format(Lille.nom) 
+    print(type(Map[0][5]))
     Paris = cl.Ville("Paris",j2,(9,6))
     Map[9][6] = "VJ2 {}".format(Paris.nom)
-
     Lille.joueur = j1
     Paris.joueur = j2
+    EclaireurJ1 = cl.Unite.Archer(j1,"EclaireurJ1",(5,5))
+    VU.ChangeValeur(EclaireurJ1)
+    EclaireurJ2 = cl.Unite.Archer(j2,"EclaireurJ2",(5,5))
+    
+    VU.ChangeValeur(EclaireurJ2)
     #choisir un build pour la ville 1:
     for ville in cl.Ville.list_villes:
         if ville.build == None:
             #Build_voulue = input("Production ?")        
             archer1 = cl.Production(cl.Unite.Archer)
             ville.build = archer1 = cl.Production(cl.Unite.Archer)
-                   
+#accessoire pour changer le nom du joueur
+def changer_nom(joueur):
+    nom = input("Rentrer votre nom d'utilisateur")
+    joueur.nom = nom
+    
+#fonction pour bouger une unité rentrer le nom de l'unité et la direction(haut,bas,droite,gauche)                   
 def bouge(unite,direction):
     x,y = unite.coord 
-
-    #appel la fonction bouge corresp
     if direction == "haut":
         if y-1>=0:
 
@@ -151,13 +162,10 @@ def bouge(unite,direction):
         else:
             return "déplacement impossible"
 
-            
-        
-     
     
 def TourPasse():
     return 
-
+'''
 def initialisationJoueur(n):
     Liste_Joueur = []
     for i in range(n):
@@ -165,9 +173,6 @@ def initialisationJoueur(n):
         Liste_Joueur.append(nom)
        
     return Liste_Joueur
-
-def AfficheMap(Map):
-    for i in range(len(Map)):
-        print(Map[i])
+'''
 
 
